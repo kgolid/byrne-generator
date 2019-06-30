@@ -1,5 +1,9 @@
 import Chance from 'chance';
 
+function getElementFromArray(arr) {
+  return arr[Math.floor(Math.random() * arr.length)];
+}
+
 function getElementsFromArray(n, arr) {
   if (n > arr.length) return [];
   const chance = new Chance();
@@ -15,4 +19,4 @@ function findCenter(points) {
   return [(x_min + x_max) / 2, (y_min + y_max) / 2];
 }
 
-export { getElementsFromArray, findCenter };
+export { getElementFromArray, getElementsFromArray, findCenter };

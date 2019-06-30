@@ -13,3 +13,10 @@ export function point_at_distance_and_angle(p1, dist, rad) {
 export function point_at_distance_towards_direction(p1, dist, pdir) {
   return point_at_distance_and_angle(p1, dist, angle_of_direction(p1, pdir));
 }
+
+export function difference_between_angles(a1, a2) {
+  let difference = a2 - a1;
+  while (difference < -Math.PI) difference += 2 * Math.PI;
+  while (difference > Math.PI) difference -= 2 * Math.PI;
+  return difference;
+}

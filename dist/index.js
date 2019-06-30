@@ -7571,6 +7571,10 @@
 	});
 	var chance_2 = chance_1.Chance;
 
+	function getElementFromArray(arr) {
+	  return arr[Math.floor(Math.random() * arr.length)];
+	}
+
 	function getElementsFromArray(n, arr) {
 	  if (n > arr.length) return [];
 	  const chance = new chance_1();
@@ -7598,437 +7602,21 @@
 	  return [p1[0] + dist * Math.cos(rad), p1[1] + dist * Math.sin(rad)];
 	}
 
-	var colourscafe = [
-	  {
-	    name: 'cc239',
-	    colors: ['#e3dd34', '#78496b', '#f0527f', '#a7e0e2'],
-	    background: '#e0eff0'
-	  },
-	  {
-	    name: 'cc234',
-	    colors: ['#ffce49', '#ede8dc', '#ff5736', '#ff99b4'],
-	    background: '#f7f4ed'
-	  },
-	  {
-	    name: 'cc232',
-	    colors: ['#5c5f46', '#ff7044', '#ffce39', '#66aeaa'],
-	    background: '#e9ecde'
-	  },
-	  {
-	    name: 'cc238',
-	    colors: ['#553c60', '#ffb0a0', '#ff6749', '#fbe090'],
-	    background: '#f5e9de'
-	  },
-	  {
-	    name: 'cc242',
-	    colors: ['#bbd444', '#fcd744', '#fa7b53', '#423c6f'],
-	    background: '#faf4e4'
-	  },
-	  {
-	    name: 'cc245',
-	    colors: ['#0d4a4e', '#ff947b', '#ead3a2', '#5284ab'],
-	    background: '#f6f4ed'
-	  },
-	  {
-	    name: 'cc273',
-	    colors: ['#363d4a', '#7b8a56', '#ff9369', '#f4c172'],
-	    background: '#f0efe2'
-	  }
-	];
-
-	var ranganath = [
-	  {
-	    name: 'rag-mysore',
-	    colors: ['#ec6c26', '#613a53', '#e8ac52', '#639aa0'],
-	    background: '#d5cda1'
-	  },
-	  {
-	    name: 'rag-gol',
-	    colors: ['#d3693e', '#803528', '#f1b156', '#90a798'],
-	    background: '#f0e0a4'
-	  },
-	  {
-	    name: 'rag-belur',
-	    colors: ['#f46e26', '#68485f', '#3d273a', '#535d55'],
-	    background: '#dcd4a6'
-	  },
-	  {
-	    name: 'rag-bangalore',
-	    colors: ['#ea720e', '#ca5130', '#e9c25a', '#52534f'],
-	    background: '#f9ecd3'
-	  },
-	  {
-	    name: 'rag-taj',
-	    colors: ['#ce565e', '#8e1752', '#f8a100', '#3ac1a6'],
-	    background: '#efdea2'
-	  },
-	  {
-	    name: 'rag-virupaksha',
-	    colors: ['#f5736a', '#925951', '#feba4c', '#9d9b9d'],
-	    background: '#eedfa2'
-	  }
-	];
-
-	var roygbivs = [
-	  {
-	    name: 'retro',
-	    colors: [
-	      '#69766f',
-	      '#9ed6cb',
-	      '#f7e5cc',
-	      '#9d8f7f',
-	      '#936454',
-	      '#bf5c32',
-	      '#efad57'
-	    ]
-	  },
-	  {
-	    name: 'retro-washedout',
-	    colors: [
-	      '#878a87',
-	      '#cbdbc8',
-	      '#e8e0d4',
-	      '#b29e91',
-	      '#9f736c',
-	      '#b76254',
-	      '#dfa372'
-	    ]
-	  },
-	  {
-	    name: 'roygbiv-warm',
-	    colors: [
-	      '#705f84',
-	      '#687d99',
-	      '#6c843e',
-	      '#fc9a1a',
-	      '#dc383a',
-	      '#aa3a33',
-	      '#9c4257'
-	    ]
-	  },
-	  {
-	    name: 'roygbiv-toned',
-	    colors: [
-	      '#817c77',
-	      '#396c68',
-	      '#89e3b7',
-	      '#f59647',
-	      '#d63644',
-	      '#893f49',
-	      '#4d3240'
-	    ]
-	  },
-	  {
-	    name: 'present-correct',
-	    colors: [
-	      '#fd3741',
-	      '#fe4f11',
-	      '#ff6800',
-	      '#ffa61a',
-	      '#ffc219',
-	      '#ffd114',
-	      '#fcd82e',
-	      '#f4d730',
-	      '#ced562',
-	      '#8ac38f',
-	      '#79b7a0',
-	      '#72b5b1',
-	      '#5b9bae',
-	      '#6ba1b7',
-	      '#49619d',
-	      '#604791',
-	      '#721e7f',
-	      '#9b2b77',
-	      '#ab2562',
-	      '#ca2847'
-	    ]
-	  }
-	];
-
-	var tundra = [
-	  {
-	    name: 'tundra1',
-	    colors: ['#40708c', '#8e998c', '#5d3f37', '#ed6954', '#f2e9e2']
-	  },
-	  {
-	    name: 'tundra2',
-	    colors: ['#5f9e93', '#3d3638', '#733632', '#b66239', '#b0a1a4', '#e3dad2']
-	  },
-	  {
-	    name: 'tundra3',
-	    colors: [
-	      '#87c3ca',
-	      '#7b7377',
-	      '#b2475d',
-	      '#7d3e3e',
-	      '#eb7f64',
-	      '#d9c67a',
-	      '#f3f2f2'
-	    ]
-	  },
-	  {
-	    name: 'tundra4',
-	    colors: [
-	      '#d53939',
-	      '#b6754d',
-	      '#a88d5f',
-	      '#524643',
-	      '#3c5a53',
-	      '#7d8c7c',
-	      '#dad6cd'
-	    ]
-	  }
-	];
-
-	var rohlfs = [
-	  {
-	    name: 'rohlfs_1R',
-	    colors: ['#004996', '#567bae', '#ff4c48', '#ffbcb3'],
-	    stroke: '#004996',
-	    background: '#fff8e7'
-	  },
-	  {
-	    name: 'rohlfs_1Y',
-	    colors: ['#004996', '#567bae', '#ffc000', '#ffdca4'],
-	    stroke: '#004996',
-	    background: '#fff8e7'
-	  },
-	  {
-	    name: 'rohlfs_1G',
-	    colors: ['#004996', '#567bae', '#60bf3c', '#d2deb1'],
-	    stroke: '#004996',
-	    background: '#fff8e7'
-	  },
-	  {
-	    name: 'rohlfs_2',
-	    colors: ['#4d3d9a', '#f76975', '#ffffff', '#eff0dd'],
-	    stroke: '#211029',
-	    background: '#58bdbc'
-	  },
-	  {
-	    name: 'rohlfs_3',
-	    colors: ['#abdfdf', '#fde500', '#58bdbc', '#eff0dd'],
-	    stroke: '#211029',
-	    background: '#f76975'
-	  },
-	  {
-	    name: 'rohlfs_4',
-	    colors: ['#fde500', '#2f2043', '#f76975', '#eff0dd'],
-	    stroke: '#211029',
-	    background: '#fbbeca'
-	  }
-	];
-
-	var ducci = [
-	  {
-	    name: 'ducci_jb',
-	    colors: ['#395e54', '#e77b4d', '#050006', '#e55486'],
-	    stroke: '#050006',
-	    background: '#efe0bc'
-	  },
-	  {
-	    name: 'ducci_a',
-	    colors: ['#809498', '#d3990e', '#000000', '#ecddc5'],
-	    stroke: '#ecddc5',
-	    background: '#863f52'
-	  },
-	  {
-	    name: 'ducci_b',
-	    colors: ['#ecddc5', '#79b27b', '#000000', '#ac6548'],
-	    stroke: '#ac6548',
-	    background: '#d5c08e'
-	  },
-	  {
-	    name: 'ducci_d',
-	    colors: ['#f3cb4d', '#f2f5e3', '#20191b', '#67875c'],
-	    stroke: '#67875c',
-	    background: '#433d5f'
-	  },
-	  {
-	    name: 'ducci_e',
-	    colors: ['#c37c2b', '#f6ecce', '#000000', '#386a7a'],
-	    stroke: '#386a7a',
-	    background: '#e3cd98'
-	  },
-	  {
-	    name: 'ducci_f',
-	    colors: ['#596f7e', '#eae6c7', '#463c21', '#f4cb4c'],
-	    stroke: '#f4cb4c',
-	    background: '#e67300'
-	  },
-	  {
-	    name: 'ducci_g',
-	    colors: ['#c75669', '#000000', '#11706a'],
-	    stroke: '#11706a',
-	    background: '#ecddc5'
-	  },
-	  {
-	    name: 'ducci_h',
-	    colors: ['#6b5c6e', '#4a2839', '#d9574a'],
-	    stroke: '#d9574a',
-	    background: '#ffc34b'
-	  },
-	  {
-	    name: 'ducci_i',
-	    colors: ['#e9dcad', '#143331', '#ffc000'],
-	    stroke: '#ffc000',
-	    background: '#a74c02'
-	  },
-	  {
-	    name: 'ducci_j',
-	    colors: ['#c47c2b', '#5f5726', '#000000', '#7e8a84'],
-	    stroke: '#7e8a84',
-	    background: '#ecddc5'
-	  },
-	  {
-	    name: 'ducci_o',
-	    colors: ['#c15e1f', '#e4a13a', '#000000', '#4d545a'],
-	    stroke: '#4d545a',
-	    background: '#dfc79b'
-	  },
-	  {
-	    name: 'ducci_q',
-	    colors: ['#4bae8c', '#d0c1a0', '#2d3538'],
-	    stroke: '#2d3538',
-	    background: '#d06440'
-	  },
-	  {
-	    name: 'ducci_u',
-	    colors: ['#f6d700', '#f2d692', '#000000', '#5d3552'],
-	    stroke: '#5d3552',
-	    background: '#ff7426'
-	  },
-	  {
-	    name: 'ducci_v',
-	    colors: ['#c65f75', '#d3990e', '#000000', '#597e7a'],
-	    stroke: '#597e7a',
-	    background: '#f6eccb'
-	  },
-	  {
-	    name: 'ducci_x',
-	    colors: ['#dd614a', '#f5cedb', '#1a1e4f'],
-	    stroke: '#1a1e4f',
-	    background: '#fbb900'
-	  }
-	];
-
-	var judson = [
-	  {
-	    name: 'jud_playground',
-	    colors: ['#f04924', '#fcce09', '#408ac9'],
-	    stroke: '#2e2925',
-	    background: '#ffffff'
-	  },
-	  {
-	    name: 'jud_horizon',
-	    colors: ['#f8c3df', '#f2e420', '#28b3d0', '#648731', '#ef6a7d'],
-	    stroke: '#030305',
-	    background: '#f2f0e1'
-	  },
-	  {
-	    name: 'jud_mural',
-	    colors: ['#ca3122', '#e5af16', '#4a93a2', '#0e7e39', '#e2b9bd'],
-	    stroke: '#1c1616',
-	    background: '#e3ded8'
-	  },
-	  {
-	    name: 'jud_cabinet',
-	    colors: ['#f0afb7', '#f6bc12', '#1477bb', '#41bb9b'],
-	    stroke: '#020508',
-	    background: '#e3ded8'
-	  }
-	];
-
-	var iivonen = [
-	  {
-	    name: 'iiso_zeitung',
-	    colors: ['#ee8067', '#f3df76', '#00a9c0', '#f7ab76'],
-	    stroke: '#111a17',
-	    background: '#f5efcb'
-	  },
-	  {
-	    name: 'iiso_curcuit',
-	    colors: ['#f0865c', '#f2b07b', '#6bc4d2', '#1a3643'],
-	    stroke: '#0f1417',
-	    background: '#f0f0e8'
-	  },
-	  {
-	    name: 'iiso_airlines',
-	    colors: ['#fe765a', '#ffb468', '#4b588f', '#faf1e0'],
-	    stroke: '#1c1616',
-	    background: '#fae5c8'
-	  },
-	  {
-	    name: 'iiso_daily',
-	    colors: ['#e76c4a', '#f0d967', '#7f8cb6', '#1daeb1', '#ef9640'],
-	    stroke: '#000100',
-	    background: '#e2ded2'
-	  }
-	];
-
-	const palettes = [
-	  {
-	    name: 'frozen-rose',
-	    colors: ['#29368f', '#e9697b', '#1b164d', '#f7d996'],
-	    background: '#f2e8e4'
-	  },
-	  {
-	    name: 'winter-night',
-	    colors: ['#122438', '#dd672e', '#87c7ca', '#ebebeb'],
-	    background: '#ebebeb'
-	  },
-	  {
-	    name: 'saami',
-	    colors: ['#eab700', '#e64818', '#2c6393', '#eecfca'],
-	    background: '#e7e6e4'
-	  },
-	  {
-	    name: 'knotberry1',
-	    colors: ['#20342a', '#f74713', '#686d2c', '#e9b4a6'],
-	    background: '#e5ded8'
-	  },
-	  {
-	    name: 'knotberry2',
-	    colors: ['#1d3b1a', '#eb4b11', '#e5bc00', '#f29881'],
-	    background: '#eae2d0'
-	  },
-	  {
-	    name: 'tricolor',
-	    colors: ['#ec643b', '#56b7ab', '#f8cb57', '#1f1e43'],
-	    background: '#f7f2df'
-	  },
-	  {
-	    name: 'foxshelter',
-	    colors: ['#ff3931', '#007861', '#311f27', '#bab9a4'],
-	    background: '#dddddd'
-	  },
-	  {
-	    name: 'hermes',
-	    colors: ['#253852', '#51222f', '#b53435', '#ecbb51'],
-	    background: '#eeccc2'
-	  }
-	];
-
-	const pals = palettes.concat(
-	  ranganath,
-	  roygbivs,
-	  tundra,
-	  colourscafe,
-	  rohlfs,
-	  ducci,
-	  judson,
-	  iivonen
-	);
-
-	var palettes$1 = pals.map(p => {
-	  p.size = p.colors.length;
-	  return p;
-	});
+	function difference_between_angles(a1, a2) {
+	  let difference = a2 - a1;
+	  while (difference < -Math.PI) difference += 2 * Math.PI;
+	  while (difference > Math.PI) difference -= 2 * Math.PI;
+	  return difference;
+	}
 
 	const Pnt = class {
 	  constructor(x, y) {
 	    this.x = x;
 	    this.y = y;
+	  }
+
+	  toArray() {
+	    return [this.x, this.y];
 	  }
 
 	  display(p) {
@@ -8039,16 +7627,17 @@
 	};
 
 	const Line = class {
-	  constructor(style, p1, p2, col) {
+	  constructor(style, p1, p2, col, e_active, w_active) {
 	    this.p1 = p1;
 	    this.p2 = p2;
 	    this.style = style;
 	    this.col = col;
-	    this.e_active = true;
-	    this.w_active = true;
+	    this.e_active = e_active;
+	    this.w_active = w_active;
 	  }
 
 	  display(p) {
+	    p.blendMode(p.MULTIPLY);
 	    p.stroke(this.col);
 	    if (this.style == 'dashed') p.drawingContext.setLineDash(5, 15);
 	    p.line(this.p1.x, this.p1.y, this.p2.x, this.p2.y);
@@ -8065,6 +7654,7 @@
 	  }
 
 	  display(p) {
+	    p.blendMode(p.BLEND);
 	    p.noStroke();
 	    p.fill(this.col);
 	    p.beginShape();
@@ -8085,6 +7675,7 @@
 	  }
 
 	  display(p) {
+	    p.blendMode(p.BLEND);
 	    p.noStroke();
 	    p.fill(this.col);
 	    p.beginShape();
@@ -8103,35 +7694,61 @@
 	  }
 
 	  display(p) {
+	    p.blendMode(p.MULTIPLY);
 	    p.stroke(this.col);
 	    p.noFill();
 	    p.ellipse(this.c.x, this.c.y, this.r * 2, this.r * 2);
 	  }
 	};
 
+	const Angle = class {
+	  constructor(c, size, angle1, angle2, col) {
+	    this.c = c;
+	    this.size = size;
+	    this.angle1 = angle1;
+	    this.angle2 = angle2;
+	    this.col = col;
+	  }
+
+	  display(p) {
+	    p.blendMode(p.BLEND);
+	    p.noStroke();
+	    p.fill(this.col);
+	    p.arc(this.c.x, this.c.y, this.size, this.size, this.angle1, this.angle2);
+	  }
+	};
+
 	const compareShapes = function(a, b) {
-	  if (a instanceof Line) return 1;
-	  if (a instanceof Circle) return 1;
-	  if (a instanceof Rectangle) return -1;
-	  if (a instanceof Triangle) return -1;
-	  return 0;
+	  return order(a) - order(b);
+	};
+
+	const order = function(a) {
+	  if (a instanceof Line) return 2;
+	  if (a instanceof Circle) return 2;
+	  if (a instanceof Angle) return 1;
+	  if (a instanceof Rectangle) return 0;
+	  if (a instanceof Triangle) return 0;
+	};
+
+	const areConnected = function(p1, p2, shapes) {
+	  if (p1 == p2) return true;
+	  return shapes.some(
+	    s =>
+	      s instanceof Line &&
+	      ((s.p1 == p1 && s.p2 == p2) || (s.p2 == p1 && s.p1 == p2))
+	  );
 	};
 
 	const palette = {
-	  colors: [
-	    '#d94c18',
-	    '#f2b319',
-	    '#265899',
-	    '#d94c18',
-	    '#f2b319',
-	    '#265899',
-	    '#d94c18',
-	    '#f2b319',
-	    '#265899',
-	    '#000000'
-	  ],
+	  colors: ['#c54514', '#dca215', '#23507f'],
 	  background: '#e8e7d4'
 	};
+
+	const fill_chance = 0.45;
+	const min_dim = 30;
+	const initial_dim = 150;
+	const angle_size = 50;
+	const number_of_steps = 15;
 
 	let sketch = function(p) {
 	  let THE_SEED;
@@ -8151,9 +7768,8 @@
 	  };
 
 	  p.draw = function() {
-	    if (steps >= 15) {
-	      if (steps >= 25) {
-	        //p.saveCanvas('byrne', 'png');
+	    if (steps >= number_of_steps) {
+	      if (steps >= number_of_steps + 8) {
 	        init_state();
 	      }
 	    } else {
@@ -8178,21 +7794,19 @@
 
 	    const p1pos = [Math.random() * p.width, Math.random() * p.height];
 	    const p2dir = Math.random() * Math.PI;
-	    const p2pos = point_at_distance_and_angle(p1pos, 120, p2dir);
+	    const p2pos = point_at_distance_and_angle(p1pos, initial_dim, p2dir);
 
-	    const p1 = new Pnt(p1pos[0], p1pos[1]);
-	    const p2 = new Pnt(p2pos[0], p2pos[1]);
+	    points = [new Pnt(...p1pos), new Pnt(...p2pos)];
 
-	    points = [p1, p2];
-
-	    connectPointsWithLine(shapes, points[0], points[1]);
+	    connectPointsWithLine(shapes, points[0], points[1], true, true);
 	  }
 
 	  function extendCollection(shapes, points) {
 	    let choice = Math.random();
 	    if (choice < 0.3) extendWithRectangle(shapes, points);
 	    else if (choice < 0.6) extendWithTriangle(shapes, points);
-	    else if (choice < 0.7) connectPointsWithCircleRandomly(shapes, points);
+	    else if (choice < 0.68) connectPointsWithCircleRandomly(shapes, points);
+	    else if (choice < 0.8) connectLinesWithAngle(shapes, points);
 	    else connectWithLineRandomly(shapes, points);
 	  }
 	};
@@ -8212,23 +7826,61 @@
 	}
 
 	function connectWithLineRandomly(coll, points) {
-	  const pair = getElementsFromArray(2, points);
-	  connectPointsWithLine(coll, ...pair);
+	  const p1 = getElementFromArray(points);
+	  const independent = points.filter(pnt => !areConnected(p1, pnt, coll));
+	  if (independent.length == 0) return;
+
+	  const p2 = getElementFromArray(independent);
+	  connectPointsWithLine(coll, p1, p2, false, false);
 	}
 
 	function connectPointsWithCircleRandomly(coll, points) {
+	  const col = getElementFromArray(palette.colors);
 	  const [cp, rp] = getElementsFromArray(2, points);
 	  let radius = dist([cp.x, cp.y], [rp.x, rp.y]);
-	  let col = getElementsFromArray(1, palette.colors)[0];
 	  const circle = new Circle(cp, radius, col);
 	  coll.push(circle);
 	}
 
-	function connectPointsWithLine(coll, p1, p2) {
-	  const col = getElementsFromArray(1, palette.colors)[0];
-	  const line = new Line('solid', p1, p2, col);
+	function connectPointsWithLine(coll, p1, p2, e_active, w_active) {
+	  const col = getElementFromArray(palette.colors);
+	  const line = new Line('solid', p1, p2, col, e_active, w_active);
 	  coll.push(line);
 	  return line;
+	}
+
+	function connectLinesWithAngle(coll, points) {
+	  const busyPoints = points
+	    .map(pnt => [
+	      pnt,
+	      coll.filter(s => s instanceof Line && (s.p1 == pnt || s.p2 == pnt))
+	    ])
+	    .filter(bp => bp[1].length > 1);
+
+	  if (busyPoints.length == 0) return;
+
+	  const pnt = getElementFromArray(busyPoints);
+	  const [l1, l2] = getElementsFromArray(2, pnt[1]);
+	  const angle1 = angle_of_direction(
+	    pnt[0].toArray(),
+	    (l1.p1 == pnt[0] ? l1.p2 : l1.p1).toArray()
+	  );
+	  const angle2 = angle_of_direction(
+	    pnt[0].toArray(),
+	    (l2.p1 == pnt[0] ? l2.p2 : l2.p1).toArray()
+	  );
+
+	  console.log(angle1, angle2, pnt);
+	  const col = getElementFromArray(palette.colors);
+
+	  if (
+	    difference_between_angles(angle1, angle2) <
+	    difference_between_angles(angle2, angle1)
+	  )
+	    coll.push(new Angle(pnt[0], angle_size, angle2, angle1, col));
+	  else {
+	    coll.push(new Angle(pnt[0], angle_size, angle1, angle2, col));
+	  }
 	}
 
 	function extendWithRectangle(coll, points) {
@@ -8237,49 +7889,40 @@
 	  );
 	  if (eligible.length == 0) return;
 
-	  const l1 = getElementsFromArray(1, eligible)[0];
-	  const p1 = [l1.p1.x, l1.p1.y];
-	  const p2 = [l1.p2.x, l1.p2.y];
+	  const l1 = getElementFromArray(eligible);
+	  const p1 = l1.p1.toArray();
+	  const p2 = l1.p2.toArray();
 	  const angle = angle_of_direction(p1, p2);
 	  const rotateWest = !l1.e_active || (l1.w_active && Math.random() < 0.5);
 	  const rotDir = rotateWest ? Math.PI / 2 : (3 * Math.PI) / 2;
-	  const rotDist = Math.max(20, dist(p1, p2) * (Math.random() + 0.2));
+	  const rotDist = Math.max(min_dim, dist(p1, p2) * (Math.random() + 0.15));
 
 	  const p3 = point_at_distance_and_angle(p2, rotDist, angle + rotDir);
 	  const p4 = point_at_distance_and_angle(p1, rotDist, angle + rotDir);
 	  const p3Obj = addPoint(points, ...p3);
 	  const p4Obj = addPoint(points, ...p4);
 	  const col = getElementsFromArray(1, palette.colors)[0];
-	  if (Math.random() < 0.5)
+	  if (Math.random() < fill_chance)
 	    coll.push(new Rectangle(l1.p1, l1.p2, p3Obj, p4Obj, col));
 
-	  const l2 = connectPointsWithLine(coll, l1.p2, p3Obj);
-	  const l3 = connectPointsWithLine(coll, p3Obj, p4Obj);
-	  const l4 = connectPointsWithLine(coll, p4Obj, l1.p1);
-	  if (rotateWest) {
-	    l1.w_active = false;
-	    l2.w_active = false;
-	    l3.w_active = false;
-	    l4.w_active = false;
-	  } else {
-	    l1.e_active = false;
-	    l2.e_active = false;
-	    l3.e_active = false;
-	    l4.e_active = false;
-	  }
+	  connectPointsWithLine(coll, l1.p2, p3Obj, rotateWest, !rotateWest);
+	  connectPointsWithLine(coll, p3Obj, p4Obj, rotateWest, !rotateWest);
+	  connectPointsWithLine(coll, p4Obj, l1.p1, rotateWest, !rotateWest);
+	  l1.e_active = l1.e_active && rotateWest;
+	  l1.w_active = l1.w_active && !rotateWest;
 	}
 
 	function extendWithTriangle(coll, points) {
 	  const eligible = coll.filter(
 	    a => a instanceof Line && (a.e_active || a.w_active)
 	  );
-	  const l1 = getElementsFromArray(1, eligible)[0];
-	  const p1 = [l1.p1.x, l1.p1.y];
-	  const p2 = [l1.p2.x, l1.p2.y];
+	  const l1 = getElementFromArray(eligible);
+	  const p1 = l1.p1.toArray();
+	  const p2 = l1.p2.toArray();
 	  const angle = angle_of_direction(p1, p2);
 	  const rotateWest = !l1.e_active || (l1.w_active && Math.random() < 0.5);
 	  const rotDir = rotateWest ? Math.PI / 2 : (3 * Math.PI) / 2;
-	  const rotDist = Math.max(20, dist(p1, p2) * (Math.random() + 0.3));
+	  const rotDist = Math.max(min_dim, dist(p1, p2) * (Math.random() + 0.15));
 
 	  const p3 = point_at_distance_and_angle(
 	    Math.random() < 0.5 ? p1 : p2,
@@ -8288,21 +7931,14 @@
 	  );
 	  const p3Obj = addPoint(points, ...p3);
 
-	  const col = getElementsFromArray(1, palette.colors)[0];
-	  if (Math.random() < 0.5) coll.push(new Triangle(l1.p1, l1.p2, p3Obj, col));
+	  const col = getElementFromArray(palette.colors);
+	  if (Math.random() < fill_chance)
+	    coll.push(new Triangle(l1.p1, l1.p2, p3Obj, col));
 
-	  const l2 = connectPointsWithLine(coll, l1.p2, p3Obj);
-	  const l3 = connectPointsWithLine(coll, p3Obj, l1.p1);
-
-	  if (rotateWest) {
-	    l1.w_active = false;
-	    l2.w_active = false;
-	    l3.w_active = false;
-	  } else {
-	    l1.e_active = false;
-	    l2.e_active = false;
-	    l3.e_active = false;
-	  }
+	  connectPointsWithLine(coll, l1.p2, p3Obj, rotateWest, !rotateWest);
+	  connectPointsWithLine(coll, p3Obj, l1.p1, rotateWest, !rotateWest);
+	  l1.e_active = l1.e_active && rotateWest;
+	  l1.w_active = l1.w_active && !rotateWest;
 	}
 
 	// connectWithLine(p1,p2)

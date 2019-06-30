@@ -1,23 +1,31 @@
 import * as util from './util';
 import * as trig from './trig';
-import * as tome from 'chromotome';
-import { Pnt, Line, Rectangle, Triangle, Circle, compareShapes } from './geom';
+import {
+  Pnt,
+  Line,
+  Rectangle,
+  Triangle,
+  Circle,
+  Angle,
+  compareShapes,
+  areConnected
+} from './geom';
 
-const palette = {
-  colors: [
-    '#d94c18',
-    '#f2b319',
-    '#265899',
-    '#d94c18',
-    '#f2b319',
-    '#265899',
-    '#d94c18',
-    '#f2b319',
-    '#265899',
-    '#000000'
-  ],
+const paletteBright = {
+  colors: ['#d94c18', '#f2b319', '#265899'],
   background: '#e8e7d4'
 };
+
+const palette = {
+  colors: ['#c54514', '#dca215', '#23507f'],
+  background: '#e8e7d4'
+};
+
+const fill_chance = 0.45;
+const min_dim = 30;
+const initial_dim = 150;
+const angle_size = 50;
+const number_of_steps = 15;
 
 let sketch = function(p) {
   let THE_SEED;
@@ -25,8 +33,6 @@ let sketch = function(p) {
   let points;
   let shapes;
   let steps;
-
-  const padding = 300;
 
   p.setup = function() {
     p.createCanvas(800, 800);
@@ -39,9 +45,8 @@ let sketch = function(p) {
   };
 
   p.draw = function() {
-    if (steps >= 15) {
-      if (steps >= 25) {
-        //p.saveCanvas('byrne', 'png');
+    if (steps >= number_of_steps) {
+      if (steps >= number_of_steps + 8) {
         init_state();
       }
     } else {
@@ -66,21 +71,19 @@ let sketch = function(p) {
 
     const p1pos = [Math.random() * p.width, Math.random() * p.height];
     const p2dir = Math.random() * Math.PI;
-    const p2pos = trig.point_at_distance_and_angle(p1pos, 120, p2dir);
+    const p2pos = trig.point_at_distance_and_angle(p1pos, initial_dim, p2dir);
 
-    const p1 = new Pnt(p1pos[0], p1pos[1]);
-    const p2 = new Pnt(p2pos[0], p2pos[1]);
+    points = [new Pnt(...p1pos), new Pnt(...p2pos)];
 
-    points = [p1, p2];
-
-    connectPointsWithLine(shapes, points[0], points[1]);
+    connectPointsWithLine(shapes, points[0], points[1], true, true);
   }
 
   function extendCollection(shapes, points) {
     let choice = Math.random();
     if (choice < 0.3) extendWithRectangle(shapes, points);
     else if (choice < 0.6) extendWithTriangle(shapes, points);
-    else if (choice < 0.7) connectPointsWithCircleRandomly(shapes, points);
+    else if (choice < 0.68) connectPointsWithCircleRandomly(shapes, points);
+    else if (choice < 0.8) connectLinesWithAngle(shapes, points);
     else connectWithLineRandomly(shapes, points);
   }
 };
@@ -100,23 +103,61 @@ function addPoint(points, x, y) {
 }
 
 function connectWithLineRandomly(coll, points) {
-  const pair = util.getElementsFromArray(2, points);
-  connectPointsWithLine(coll, ...pair);
+  const p1 = util.getElementFromArray(points);
+  const independent = points.filter(pnt => !areConnected(p1, pnt, coll));
+  if (independent.length == 0) return;
+
+  const p2 = util.getElementFromArray(independent);
+  connectPointsWithLine(coll, p1, p2, false, false);
 }
 
 function connectPointsWithCircleRandomly(coll, points) {
+  const col = util.getElementFromArray(palette.colors);
   const [cp, rp] = util.getElementsFromArray(2, points);
   let radius = trig.dist([cp.x, cp.y], [rp.x, rp.y]);
-  let col = util.getElementsFromArray(1, palette.colors)[0];
   const circle = new Circle(cp, radius, col);
   coll.push(circle);
 }
 
-function connectPointsWithLine(coll, p1, p2) {
-  const col = util.getElementsFromArray(1, palette.colors)[0];
-  const line = new Line('solid', p1, p2, col);
+function connectPointsWithLine(coll, p1, p2, e_active, w_active) {
+  const col = util.getElementFromArray(palette.colors);
+  const line = new Line('solid', p1, p2, col, e_active, w_active);
   coll.push(line);
   return line;
+}
+
+function connectLinesWithAngle(coll, points) {
+  const busyPoints = points
+    .map(pnt => [
+      pnt,
+      coll.filter(s => s instanceof Line && (s.p1 == pnt || s.p2 == pnt))
+    ])
+    .filter(bp => bp[1].length > 1);
+
+  if (busyPoints.length == 0) return;
+
+  const pnt = util.getElementFromArray(busyPoints);
+  const [l1, l2] = util.getElementsFromArray(2, pnt[1]);
+  const angle1 = trig.angle_of_direction(
+    pnt[0].toArray(),
+    (l1.p1 == pnt[0] ? l1.p2 : l1.p1).toArray()
+  );
+  const angle2 = trig.angle_of_direction(
+    pnt[0].toArray(),
+    (l2.p1 == pnt[0] ? l2.p2 : l2.p1).toArray()
+  );
+
+  console.log(angle1, angle2, pnt);
+  const col = util.getElementFromArray(palette.colors);
+
+  if (
+    trig.difference_between_angles(angle1, angle2) <
+    trig.difference_between_angles(angle2, angle1)
+  )
+    coll.push(new Angle(pnt[0], angle_size, angle2, angle1, col));
+  else {
+    coll.push(new Angle(pnt[0], angle_size, angle1, angle2, col));
+  }
 }
 
 function extendWithRectangle(coll, points) {
@@ -125,49 +166,40 @@ function extendWithRectangle(coll, points) {
   );
   if (eligible.length == 0) return;
 
-  const l1 = util.getElementsFromArray(1, eligible)[0];
-  const p1 = [l1.p1.x, l1.p1.y];
-  const p2 = [l1.p2.x, l1.p2.y];
+  const l1 = util.getElementFromArray(eligible);
+  const p1 = l1.p1.toArray();
+  const p2 = l1.p2.toArray();
   const angle = trig.angle_of_direction(p1, p2);
   const rotateWest = !l1.e_active || (l1.w_active && Math.random() < 0.5);
   const rotDir = rotateWest ? Math.PI / 2 : (3 * Math.PI) / 2;
-  const rotDist = Math.max(20, trig.dist(p1, p2) * (Math.random() + 0.2));
+  const rotDist = Math.max(min_dim, trig.dist(p1, p2) * (Math.random() + 0.15));
 
   const p3 = trig.point_at_distance_and_angle(p2, rotDist, angle + rotDir);
   const p4 = trig.point_at_distance_and_angle(p1, rotDist, angle + rotDir);
   const p3Obj = addPoint(points, ...p3);
   const p4Obj = addPoint(points, ...p4);
   const col = util.getElementsFromArray(1, palette.colors)[0];
-  if (Math.random() < 0.5)
+  if (Math.random() < fill_chance)
     coll.push(new Rectangle(l1.p1, l1.p2, p3Obj, p4Obj, col));
 
-  const l2 = connectPointsWithLine(coll, l1.p2, p3Obj);
-  const l3 = connectPointsWithLine(coll, p3Obj, p4Obj);
-  const l4 = connectPointsWithLine(coll, p4Obj, l1.p1);
-  if (rotateWest) {
-    l1.w_active = false;
-    l2.w_active = false;
-    l3.w_active = false;
-    l4.w_active = false;
-  } else {
-    l1.e_active = false;
-    l2.e_active = false;
-    l3.e_active = false;
-    l4.e_active = false;
-  }
+  connectPointsWithLine(coll, l1.p2, p3Obj, rotateWest, !rotateWest);
+  connectPointsWithLine(coll, p3Obj, p4Obj, rotateWest, !rotateWest);
+  connectPointsWithLine(coll, p4Obj, l1.p1, rotateWest, !rotateWest);
+  l1.e_active = l1.e_active && rotateWest;
+  l1.w_active = l1.w_active && !rotateWest;
 }
 
 function extendWithTriangle(coll, points) {
   const eligible = coll.filter(
     a => a instanceof Line && (a.e_active || a.w_active)
   );
-  const l1 = util.getElementsFromArray(1, eligible)[0];
-  const p1 = [l1.p1.x, l1.p1.y];
-  const p2 = [l1.p2.x, l1.p2.y];
+  const l1 = util.getElementFromArray(eligible);
+  const p1 = l1.p1.toArray();
+  const p2 = l1.p2.toArray();
   const angle = trig.angle_of_direction(p1, p2);
   const rotateWest = !l1.e_active || (l1.w_active && Math.random() < 0.5);
   const rotDir = rotateWest ? Math.PI / 2 : (3 * Math.PI) / 2;
-  const rotDist = Math.max(20, trig.dist(p1, p2) * (Math.random() + 0.3));
+  const rotDist = Math.max(min_dim, trig.dist(p1, p2) * (Math.random() + 0.15));
 
   const p3 = trig.point_at_distance_and_angle(
     Math.random() < 0.5 ? p1 : p2,
@@ -176,21 +208,14 @@ function extendWithTriangle(coll, points) {
   );
   const p3Obj = addPoint(points, ...p3);
 
-  const col = util.getElementsFromArray(1, palette.colors)[0];
-  if (Math.random() < 0.5) coll.push(new Triangle(l1.p1, l1.p2, p3Obj, col));
+  const col = util.getElementFromArray(palette.colors);
+  if (Math.random() < fill_chance)
+    coll.push(new Triangle(l1.p1, l1.p2, p3Obj, col));
 
-  const l2 = connectPointsWithLine(coll, l1.p2, p3Obj);
-  const l3 = connectPointsWithLine(coll, p3Obj, l1.p1);
-
-  if (rotateWest) {
-    l1.w_active = false;
-    l2.w_active = false;
-    l3.w_active = false;
-  } else {
-    l1.e_active = false;
-    l2.e_active = false;
-    l3.e_active = false;
-  }
+  connectPointsWithLine(coll, l1.p2, p3Obj, rotateWest, !rotateWest);
+  connectPointsWithLine(coll, p3Obj, l1.p1, rotateWest, !rotateWest);
+  l1.e_active = l1.e_active && rotateWest;
+  l1.w_active = l1.w_active && !rotateWest;
 }
 
 // connectWithLine(p1,p2)

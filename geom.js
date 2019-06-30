@@ -4,6 +4,10 @@ const Pnt = class {
     this.y = y;
   }
 
+  toArray() {
+    return [this.x, this.y];
+  }
+
   display(p) {
     p.stroke(0);
     p.noFill();
@@ -12,16 +16,17 @@ const Pnt = class {
 };
 
 const Line = class {
-  constructor(style, p1, p2, col) {
+  constructor(style, p1, p2, col, e_active, w_active) {
     this.p1 = p1;
     this.p2 = p2;
     this.style = style;
     this.col = col;
-    this.e_active = true;
-    this.w_active = true;
+    this.e_active = e_active;
+    this.w_active = w_active;
   }
 
   display(p) {
+    p.blendMode(p.MULTIPLY);
     p.stroke(this.col);
     if (this.style == 'dashed') p.drawingContext.setLineDash(5, 15);
     p.line(this.p1.x, this.p1.y, this.p2.x, this.p2.y);
@@ -38,6 +43,7 @@ const Rectangle = class {
   }
 
   display(p) {
+    p.blendMode(p.BLEND);
     p.noStroke();
     p.fill(this.col);
     p.beginShape();
@@ -58,6 +64,7 @@ const Triangle = class {
   }
 
   display(p) {
+    p.blendMode(p.BLEND);
     p.noStroke();
     p.fill(this.col);
     p.beginShape();
@@ -76,18 +83,58 @@ const Circle = class {
   }
 
   display(p) {
+    p.blendMode(p.MULTIPLY);
     p.stroke(this.col);
     p.noFill();
     p.ellipse(this.c.x, this.c.y, this.r * 2, this.r * 2);
   }
 };
 
-const compareShapes = function(a, b) {
-  if (a instanceof Line) return 1;
-  if (a instanceof Circle) return 1;
-  if (a instanceof Rectangle) return -1;
-  if (a instanceof Triangle) return -1;
-  return 0;
+const Angle = class {
+  constructor(c, size, angle1, angle2, col) {
+    this.c = c;
+    this.size = size;
+    this.angle1 = angle1;
+    this.angle2 = angle2;
+    this.col = col;
+  }
+
+  display(p) {
+    p.blendMode(p.BLEND);
+    p.noStroke();
+    p.fill(this.col);
+    p.arc(this.c.x, this.c.y, this.size, this.size, this.angle1, this.angle2);
+  }
 };
 
-export { Pnt, Line, Triangle, Rectangle, Circle, compareShapes };
+const compareShapes = function(a, b) {
+  return order(a) - order(b);
+};
+
+const order = function(a) {
+  if (a instanceof Line) return 2;
+  if (a instanceof Circle) return 2;
+  if (a instanceof Angle) return 1;
+  if (a instanceof Rectangle) return 0;
+  if (a instanceof Triangle) return 0;
+};
+
+const areConnected = function(p1, p2, shapes) {
+  if (p1 == p2) return true;
+  return shapes.some(
+    s =>
+      s instanceof Line &&
+      ((s.p1 == p1 && s.p2 == p2) || (s.p2 == p1 && s.p1 == p2))
+  );
+};
+
+export {
+  Pnt,
+  Line,
+  Triangle,
+  Rectangle,
+  Circle,
+  Angle,
+  compareShapes,
+  areConnected
+};

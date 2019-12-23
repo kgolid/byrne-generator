@@ -133,7 +133,8 @@ function connectLinesWithAngle(coll, points) {
       pnt,
       coll.filter(s => s instanceof Line && (s.p1 == pnt || s.p2 == pnt))
     ])
-    .filter(bp => bp[1].length > 1);
+    .filter(bp => bp[1].length > 1)
+    .filter(bp => !coll.some(s => s instanceof Angle && s.c == bp[0]));
 
   if (busyPoints.length == 0) return;
 

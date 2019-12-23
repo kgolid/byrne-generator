@@ -7733,9 +7733,7 @@
 	const areConnected = function(p1, p2, shapes) {
 	  if (p1 == p2) return true;
 	  return shapes.some(
-	    s =>
-	      s instanceof Line &&
-	      ((s.p1 == p1 && s.p2 == p2) || (s.p2 == p1 && s.p1 == p2))
+	    s => s instanceof Line && ((s.p1 == p1 && s.p2 == p2) || (s.p2 == p1 && s.p1 == p2))
 	  );
 	};
 
@@ -7749,6 +7747,7 @@
 	const initial_dim = 150;
 	const angle_size = 50;
 	const number_of_steps = 15;
+	const done_pause = 8;
 
 	let sketch = function(p) {
 	  let THE_SEED;
@@ -7769,7 +7768,7 @@
 
 	  p.draw = function() {
 	    if (steps >= number_of_steps) {
-	      if (steps >= number_of_steps + 8) {
+	      if (steps >= number_of_steps + done_pause) {
 	        init_state();
 	      }
 	    } else {
@@ -7803,10 +7802,10 @@
 
 	  function extendCollection(shapes, points) {
 	    let choice = Math.random();
-	    if (choice < 0.3) extendWithRectangle(shapes, points);
-	    else if (choice < 0.6) extendWithTriangle(shapes, points);
-	    else if (choice < 0.68) connectPointsWithCircleRandomly(shapes, points);
-	    else if (choice < 0.8) connectLinesWithAngle(shapes, points);
+	    if (choice < 0.25) extendWithRectangle(shapes, points);
+	    else if (choice < 0.5) extendWithTriangle(shapes, points);
+	    else if (choice < 0.6) connectPointsWithCircleRandomly(shapes, points);
+	    else if (choice < 0.85) connectLinesWithAngle(shapes, points);
 	    else connectWithLineRandomly(shapes, points);
 	  }
 	};
@@ -7855,7 +7854,8 @@
 	      pnt,
 	      coll.filter(s => s instanceof Line && (s.p1 == pnt || s.p2 == pnt))
 	    ])
-	    .filter(bp => bp[1].length > 1);
+	    .filter(bp => bp[1].length > 1)
+	    .filter(bp => !coll.some(s => s instanceof Angle && s.c == bp[0]));
 
 	  if (busyPoints.length == 0) return;
 
@@ -7884,9 +7884,7 @@
 	}
 
 	function extendWithRectangle(coll, points) {
-	  const eligible = coll.filter(
-	    a => a instanceof Line && (a.e_active || a.w_active)
-	  );
+	  const eligible = coll.filter(a => a instanceof Line && (a.e_active || a.w_active));
 	  if (eligible.length == 0) return;
 
 	  const l1 = getElementFromArray(eligible);
@@ -7913,9 +7911,7 @@
 	}
 
 	function extendWithTriangle(coll, points) {
-	  const eligible = coll.filter(
-	    a => a instanceof Line && (a.e_active || a.w_active)
-	  );
+	  const eligible = coll.filter(a => a instanceof Line && (a.e_active || a.w_active));
 	  const l1 = getElementFromArray(eligible);
 	  const p1 = l1.p1.toArray();
 	  const p2 = l1.p2.toArray();
@@ -7932,8 +7928,7 @@
 	  const p3Obj = addPoint(points, ...p3);
 
 	  const col = getElementFromArray(palette.colors);
-	  if (Math.random() < fill_chance)
-	    coll.push(new Triangle(l1.p1, l1.p2, p3Obj, col));
+	  if (Math.random() < fill_chance) coll.push(new Triangle(l1.p1, l1.p2, p3Obj, col));
 
 	  connectPointsWithLine(coll, l1.p2, p3Obj, rotateWest, !rotateWest);
 	  connectPointsWithLine(coll, p3Obj, l1.p1, rotateWest, !rotateWest);

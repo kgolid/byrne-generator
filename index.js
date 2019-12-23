@@ -81,10 +81,10 @@ let sketch = function(p) {
 
   function extendCollection(shapes, points) {
     let choice = Math.random();
-    if (choice < 0.3) extendWithRectangle(shapes, points);
-    else if (choice < 0.6) extendWithTriangle(shapes, points);
-    else if (choice < 0.68) connectPointsWithCircleRandomly(shapes, points);
-    else if (choice < 0.8) connectLinesWithAngle(shapes, points);
+    if (choice < 0.25) extendWithRectangle(shapes, points);
+    else if (choice < 0.5) extendWithTriangle(shapes, points);
+    else if (choice < 0.6) connectPointsWithCircleRandomly(shapes, points);
+    else if (choice < 0.85) connectLinesWithAngle(shapes, points);
     else connectWithLineRandomly(shapes, points);
   }
 };

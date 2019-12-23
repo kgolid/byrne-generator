@@ -26,6 +26,7 @@ const min_dim = 30;
 const initial_dim = 150;
 const angle_size = 50;
 const number_of_steps = 15;
+const done_pause = 8;
 
 let sketch = function(p) {
   let THE_SEED;
@@ -46,7 +47,7 @@ let sketch = function(p) {
 
   p.draw = function() {
     if (steps >= number_of_steps) {
-      if (steps >= number_of_steps + 8) {
+      if (steps >= number_of_steps + done_pause) {
         init_state();
       }
     } else {

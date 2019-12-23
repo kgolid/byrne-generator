@@ -162,9 +162,7 @@ function connectLinesWithAngle(coll, points) {
 }
 
 function extendWithRectangle(coll, points) {
-  const eligible = coll.filter(
-    a => a instanceof Line && (a.e_active || a.w_active)
-  );
+  const eligible = coll.filter(a => a instanceof Line && (a.e_active || a.w_active));
   if (eligible.length == 0) return;
 
   const l1 = util.getElementFromArray(eligible);
@@ -191,9 +189,7 @@ function extendWithRectangle(coll, points) {
 }
 
 function extendWithTriangle(coll, points) {
-  const eligible = coll.filter(
-    a => a instanceof Line && (a.e_active || a.w_active)
-  );
+  const eligible = coll.filter(a => a instanceof Line && (a.e_active || a.w_active));
   const l1 = util.getElementFromArray(eligible);
   const p1 = l1.p1.toArray();
   const p2 = l1.p2.toArray();
@@ -210,8 +206,7 @@ function extendWithTriangle(coll, points) {
   const p3Obj = addPoint(points, ...p3);
 
   const col = util.getElementFromArray(palette.colors);
-  if (Math.random() < fill_chance)
-    coll.push(new Triangle(l1.p1, l1.p2, p3Obj, col));
+  if (Math.random() < fill_chance) coll.push(new Triangle(l1.p1, l1.p2, p3Obj, col));
 
   connectPointsWithLine(coll, l1.p2, p3Obj, rotateWest, !rotateWest);
   connectPointsWithLine(coll, p3Obj, l1.p1, rotateWest, !rotateWest);

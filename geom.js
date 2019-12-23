@@ -122,19 +122,8 @@ const order = function(a) {
 const areConnected = function(p1, p2, shapes) {
   if (p1 == p2) return true;
   return shapes.some(
-    s =>
-      s instanceof Line &&
-      ((s.p1 == p1 && s.p2 == p2) || (s.p2 == p1 && s.p1 == p2))
+    s => s instanceof Line && ((s.p1 == p1 && s.p2 == p2) || (s.p2 == p1 && s.p1 == p2))
   );
 };
 
-export {
-  Pnt,
-  Line,
-  Triangle,
-  Rectangle,
-  Circle,
-  Angle,
-  compareShapes,
-  areConnected
-};
+export { Pnt, Line, Triangle, Rectangle, Circle, Angle, compareShapes, areConnected };
